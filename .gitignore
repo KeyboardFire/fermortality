@@ -1,0 +1,5 @@
+# Vim
+.*.sw?
+
+# cocos2d-x
+linux-build
