@@ -126,6 +126,7 @@ set(GAME_HEADERS
   Classes/AppDelegate.h
   Classes/HelloWorldScene.h
   Classes/Creature.h
+  Classes/Enemies/Enemies.h
   Classes/Enemies/Player.h
   Classes/Enemies/Slime.h
   ${PLATFORM_SPECIFIC_HEADERS}

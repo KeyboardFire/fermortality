@@ -12,6 +12,20 @@ public:
     virtual std::string filename() { return "must be overridden"; };
     static Creature* create(std::string type);
 
+    // this has to be implemented in the header because C++ is idiotic
+    template <typename T> static T* setupCreature(T *c) {
+        if (c && c->initWithFile(c->filename())) {
+            c->autorelease();
+
+            c->velocity = new Vec2(0, 0); // TODO we have to delete this somewhere
+
+            return c;
+        }
+
+        CC_SAFE_DELETE(c);
+        return NULL;
+    };
+
     Vec2 *velocity;
 };
 
