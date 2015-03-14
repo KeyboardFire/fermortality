@@ -11,6 +11,7 @@ class Creature: public cocos2d::Sprite {
 public:
     virtual std::string filename() { return "must be overridden"; };
     virtual void update() { };
+    virtual bool collidedWithPlayer(char dir, Creature *player) {};
     static Creature* create(std::string type);
 
     // this has to be implemented in the header because C++ is idiotic

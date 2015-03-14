@@ -127,10 +127,12 @@ void HelloWorld::update(float dt) {
 
         s->update();
 
-        if (pVelocity->y < 0 && collide(player, s) && player->getPositionY() > s->getPositionY()) {
-            s->removeFromParent();
-            enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
-            continue;
+        char collision = collide(player, s);
+        if (collision) {
+            if (s->collidedWithPlayer(collision, player)) {
+                enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
+                continue;
+            }
         }
     }
 

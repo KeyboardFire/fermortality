@@ -6,3 +6,11 @@ void Slime::update() {
         velocity->y += 9;
     }
 }
+
+bool Slime::collidedWithPlayer(char dir, Creature *player) {
+    if (player->velocity->y < 0 && player->getPositionY() > getPositionY()) {
+        removeFromParent();
+        return true;
+    }
+    return false;
+}
