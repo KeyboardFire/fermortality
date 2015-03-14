@@ -9,6 +9,7 @@ USING_NS_CC;
 
 class Slime: public Creature {
     virtual std::string filename() { return "sprites/Enemies/slimeWalk1.png"; };
+    virtual void update();
 };
 
 #endif // __SLIME_H__

@@ -125,16 +125,12 @@ void HelloWorld::update(float dt) {
     for (auto s : enemies) {
         updateCreature(s);
 
+        s->update();
+
         if (pVelocity->y < 0 && collide(player, s) && player->getPositionY() > s->getPositionY()) {
             s->removeFromParent();
             enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
             continue;
-        }
-
-        auto v = s->velocity;
-        v->x += RandomHelper::random_real<float>(-0.5, 0.5);
-        if (v->y == 0 && RandomHelper::random_int(0, 15) == 0) {
-            v->y += 9;
         }
     }
 
