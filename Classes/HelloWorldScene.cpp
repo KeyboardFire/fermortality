@@ -1,5 +1,4 @@
 #include "HelloWorldScene.h"
-#include "Enemies/Enemies.h"
 
 #include <iostream>
 #include <cmath>
@@ -40,7 +39,7 @@ bool HelloWorld::init() {
     }
 
     // add player sprite
-    player = Creature::create("player");
+    player = Player::create();
     player->setPosition(Vec2(map->getTileSize().width, map->getTileSize().height));
     player->setAnchorPoint(Vec2(0, 0));
     addChild(player, 1);
@@ -86,10 +85,10 @@ void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
             }
             break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-            pDir = pDir < 0 ? 2 : 1;
+            player->dir = player->dir < 0 ? 2 : 1;
             break;
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-            pDir = pDir > 0 ? -2 : -1;
+            player->dir = player->dir > 0 ? -2 : -1;
             break;
         case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
             cheat = true;
@@ -102,10 +101,10 @@ void HelloWorld::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
             break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-            pDir = pDir == 1 ? 0 : (pDir == 2 ? -1 : (pDir == -2 ? -1 : pDir));
+            player->dir = player->dir == 1 ? 0 : (player->dir == 2 ? -1 : (player->dir == -2 ? -1 : player->dir));
             break;
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-            pDir = pDir == -1 ? 0 : (pDir == -2 ? 1 : (pDir == 2 ? 1 : pDir));
+            player->dir = player->dir == -1 ? 0 : (player->dir == -2 ? 1 : (player->dir == 2 ? 1 : player->dir));
             break;
         case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
             cheat = false;
@@ -115,9 +114,9 @@ void HelloWorld::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 
 void HelloWorld::update(float dt) {
     auto pVelocity = player->velocity;
-    if (pDir > 0 && pVelocity->x <  RUN_SPEED) pVelocity->x += RUN_ACCELERATION;
-    if (pDir < 0 && pVelocity->x > -RUN_SPEED) pVelocity->x -= RUN_ACCELERATION;
-    if (pDir == 0) pVelocity->x *= RUN_FRICTION;
+    if (player->dir > 0 && pVelocity->x <  RUN_SPEED) pVelocity->x += RUN_ACCELERATION;
+    if (player->dir < 0 && pVelocity->x > -RUN_SPEED) pVelocity->x -= RUN_ACCELERATION;
+    if (player->dir == 0) pVelocity->x *= RUN_FRICTION;
 
     if (cheat) pVelocity->y = JUMP_SPEED;
 

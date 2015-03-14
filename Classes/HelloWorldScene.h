@@ -3,6 +3,7 @@
 
 #include "../cocos2d/cocos/cocos2d.h"
 #include "Creature.h"
+#include "Enemies/Enemies.h"
 
 #include <vector>
 
@@ -19,8 +20,7 @@ public:
 
     int screenWidth, screenHeight;
 
-    Creature* player;
-    int pDir;
+    Player* player;
     const int RUN_SPEED = 5, RUN_ACCELERATION = 1, GRAVITY = 1, JUMP_SPEED = 18;
     const float RUN_FRICTION = 0.9;
     std::vector<Creature*> enemies;
