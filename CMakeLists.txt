@@ -25,7 +25,7 @@ cmake_policy(SET CMP0017 NEW)
 
 cmake_minimum_required(VERSION 2.8)
 
-set(APP_NAME MyGame)
+set(APP_NAME Fermortality)
 project (${APP_NAME})
 
 set(COCOS2D_ROOT ${CMAKE_SOURCE_DIR}/cocos2d)
@@ -115,7 +115,7 @@ include_directories(
 
 set(GAME_SRC
   Classes/AppDelegate.cpp
-  Classes/HelloWorldScene.cpp
+  Classes/GameLayer.cpp
   Classes/Creature.cpp
   Classes/Enemies/Player.cpp
   Classes/Enemies/Slime.cpp
@@ -124,7 +124,7 @@ set(GAME_SRC
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
-  Classes/HelloWorldScene.h
+  Classes/GameLayer.h
   Classes/Creature.h
   Classes/Enemies/Enemies.h
   Classes/Enemies/Player.h
