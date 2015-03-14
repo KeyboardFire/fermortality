@@ -24,26 +24,31 @@ bool HelloWorld::init() {
     screenWidth = Director::getInstance()->getOpenGLView()->getFrameSize().width;
     screenHeight = Director::getInstance()->getOpenGLView()->getFrameSize().height;
 
-    // add player sprite
-    player = Sprite::create("sprites/Player/p1_stand.png");
-    player->setPosition(Vec2(100, 100));
-    player->setAnchorPoint(Vec2(0, 0));
-    Vec2 *pVelocity = new Vec2(0, 0); // we never delete this because it always persists
-    player->setUserData((void*) pVelocity);
-    addChild(player, 1);
-
-    // add a slime
-    auto slime = Sprite::create("sprites/Enemies/slimeWalk1.png");
-    slime->setPosition(Vec2(500, 400));
-    slime->setAnchorPoint(Vec2(0, 0));
-    Vec2 *sv = new Vec2(0, 0);
-    slime->setUserData((void*) sv);
-    addChild(slime, 0);
-    enemies.push_back(slime);
-
     // add tilemap
     auto map = TMXTiledMap::create("tileset.tmx");
     addChild(map);
+
+    // add slimes
+    for (int i = 0; i < 100; ++i) {
+        auto slime = Sprite::create("sprites/Enemies/slimeWalk1.png");
+        slime->setPosition(Vec2(
+            RandomHelper::random_int(0, (int) map->getContentSize().width),
+            RandomHelper::random_int(0, (int) map->getContentSize().height)
+        ));
+        slime->setAnchorPoint(Vec2(0, 0));
+        auto sData = new CreatureData;
+        slime->setUserData((void*) sData);
+        addChild(slime, 0);
+        enemies.push_back(slime);
+    }
+
+    // add player sprite
+    player = Sprite::create("sprites/Player/p1_stand.png");
+    player->setPosition(Vec2(map->getTileSize().width, map->getTileSize().height));
+    player->setAnchorPoint(Vec2(0, 0));
+    auto pData = new CreatureData; // we never delete this because it always persists
+    player->setUserData((void*) pData);
+    addChild(player, 1);
 
     // set up collision detection
     auto layer = map->getLayer("Tile Layer 1");
@@ -77,10 +82,9 @@ bool HelloWorld::init() {
 }
 
 void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
-    Vec2 *pVelocity;
+    auto pVelocity = ((CreatureData*) player->getUserData())->velocity;
     switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
-            pVelocity = (Vec2*) player->getUserData();
             // can only jump when standing still on ground
             if (pVelocity->y == 0) {
                 pVelocity->y = JUMP_SPEED;
@@ -115,7 +119,7 @@ void HelloWorld::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 }
 
 void HelloWorld::update(float dt) {
-    Vec2 *pVelocity = (Vec2*) player->getUserData();
+    auto pVelocity = ((CreatureData*) player->getUserData())->velocity;
     if (pDir > 0 && pVelocity->x <  RUN_SPEED) pVelocity->x += RUN_ACCELERATION;
     if (pDir < 0 && pVelocity->x > -RUN_SPEED) pVelocity->x -= RUN_ACCELERATION;
     if (pDir == 0) pVelocity->x *= RUN_FRICTION;
@@ -125,17 +129,18 @@ void HelloWorld::update(float dt) {
     updateSprite(player, pVelocity);
 
     for (auto s : enemies) {
-        updateSprite(s, (Vec2*) s->getUserData());
+        updateSprite(s, ((CreatureData*) s->getUserData())->velocity);
 
-        if (pVelocity->y < 0 && collide(player, s) == 't') {
+        if (pVelocity->y < 0 && collide(player, s) && player->getPositionY() > s->getPositionY()) {
             s->removeFromParent();
             enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
             continue;
         }
 
-        ((Vec2*) s->getUserData())->x += RandomHelper::random_int(-2, 2);
-        if (((Vec2*) s->getUserData())->y == 0 && RandomHelper::random_int(0, 35) == 0) {
-            ((Vec2*) s->getUserData())->y += JUMP_SPEED;
+        auto v = ((CreatureData*) s->getUserData())->velocity;
+        v->x += RandomHelper::random_real<float>(-0.5, 0.5);
+        if (v->y == 0 && RandomHelper::random_int(0, 15) == 0) {
+            v->y += 9;
         }
     }
 

@@ -7,6 +7,16 @@
 
 USING_NS_CC;
 
+struct CreatureData {
+    Vec2 *velocity;
+    CreatureData() {
+        velocity = new Vec2(0, 0);
+    }
+    ~CreatureData() {
+        delete velocity;
+    }
+};
+
 class HelloWorld: public cocos2d::Layer {
 public:
     // implement the "static create()" method manually
