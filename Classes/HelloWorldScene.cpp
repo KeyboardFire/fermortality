@@ -1,12 +1,11 @@
 #include "HelloWorldScene.h"
+#include "Enemies/Enemies.h"
 
 #include <iostream>
 #include <cmath>
 #include <algorithm>
-#include <ccRandom.h>
 
 USING_NS_CC;
-
 
 Scene* HelloWorld::createScene() {
     auto scene = Scene::create();
@@ -30,24 +29,20 @@ bool HelloWorld::init() {
 
     // add slimes
     for (int i = 0; i < 100; ++i) {
-        auto slime = Sprite::create("sprites/Enemies/slimeWalk1.png");
+        auto slime = Creature::create("slime");
         slime->setPosition(Vec2(
             RandomHelper::random_int(0, (int) map->getContentSize().width),
             RandomHelper::random_int(0, (int) map->getContentSize().height)
         ));
         slime->setAnchorPoint(Vec2(0, 0));
-        auto sData = new CreatureData;
-        slime->setUserData((void*) sData);
         addChild(slime, 0);
         enemies.push_back(slime);
     }
 
     // add player sprite
-    player = Sprite::create("sprites/Player/p1_stand.png");
+    player = Creature::create("player");
     player->setPosition(Vec2(map->getTileSize().width, map->getTileSize().height));
     player->setAnchorPoint(Vec2(0, 0));
-    auto pData = new CreatureData; // we never delete this because it always persists
-    player->setUserData((void*) pData);
     addChild(player, 1);
 
     // set up collision detection
@@ -82,7 +77,7 @@ bool HelloWorld::init() {
 }
 
 void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
-    auto pVelocity = ((CreatureData*) player->getUserData())->velocity;
+    auto pVelocity = player->velocity;
     switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
             // can only jump when standing still on ground
@@ -119,17 +114,17 @@ void HelloWorld::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 }
 
 void HelloWorld::update(float dt) {
-    auto pVelocity = ((CreatureData*) player->getUserData())->velocity;
+    auto pVelocity = player->velocity;
     if (pDir > 0 && pVelocity->x <  RUN_SPEED) pVelocity->x += RUN_ACCELERATION;
     if (pDir < 0 && pVelocity->x > -RUN_SPEED) pVelocity->x -= RUN_ACCELERATION;
     if (pDir == 0) pVelocity->x *= RUN_FRICTION;
 
     if (cheat) pVelocity->y = JUMP_SPEED;
 
-    updateSprite(player, pVelocity);
+    updateCreature(player);
 
     for (auto s : enemies) {
-        updateSprite(s, ((CreatureData*) s->getUserData())->velocity);
+        updateCreature(s);
 
         if (pVelocity->y < 0 && collide(player, s) && player->getPositionY() > s->getPositionY()) {
             s->removeFromParent();
@@ -137,7 +132,7 @@ void HelloWorld::update(float dt) {
             continue;
         }
 
-        auto v = ((CreatureData*) s->getUserData())->velocity;
+        auto v = s->velocity;
         v->x += RandomHelper::random_real<float>(-0.5, 0.5);
         if (v->y == 0 && RandomHelper::random_int(0, 15) == 0) {
             v->y += 9;
@@ -147,7 +142,9 @@ void HelloWorld::update(float dt) {
     setPosition(Vec2(screenWidth/2 - player->getPositionX(), screenHeight/2 - player->getPositionY()));
 }
 
-void HelloWorld::updateSprite(Sprite *s, Vec2 *v) {
+void HelloWorld::updateCreature(Creature *s) {
+    auto v = s->velocity;
+
     v->y -= GRAVITY;
 
     float px = s->getPositionX() + v->x,
