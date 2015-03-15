@@ -7,7 +7,7 @@
 USING_NS_CC;
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init() {
+bool GameLayer::init() {
     // super init first
     if (!Layer::init()) return false;
 
@@ -78,8 +78,8 @@ bool HelloWorld::init() {
 
     // add keyboard listener
     auto listener = EventListenerKeyboard::create();
-    listener->onKeyPressed = CC_CALLBACK_2(HelloWorld::onKeyPressed, this);
-    listener->onKeyReleased = CC_CALLBACK_2(HelloWorld::onKeyReleased, this);
+    listener->onKeyPressed = CC_CALLBACK_2(GameLayer::onKeyPressed, this);
+    listener->onKeyReleased = CC_CALLBACK_2(GameLayer::onKeyReleased, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     // go!
@@ -88,7 +88,7 @@ bool HelloWorld::init() {
     return true;
 }
 
-void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
+void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     auto pVelocity = player->velocity;
     switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -109,7 +109,7 @@ void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     }
 }
 
-void HelloWorld::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
+void GameLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
     switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
             break;
@@ -125,7 +125,7 @@ void HelloWorld::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
     }
 }
 
-void HelloWorld::update(float dt) {
+void GameLayer::update(float dt) {
     int oldHealth = player->health;
 
     auto pVelocity = player->velocity;
@@ -156,7 +156,7 @@ void HelloWorld::update(float dt) {
     setPosition(Vec2(screenWidth/2 - player->getPositionX(), screenHeight/2 - player->getPositionY()));
 }
 
-void HelloWorld::updateCreature(Creature *s) {
+void GameLayer::updateCreature(Creature *s) {
     auto v = s->velocity;
 
     v->y -= GRAVITY;
@@ -205,7 +205,7 @@ void HelloWorld::updateCreature(Creature *s) {
     s->update(aiInfo);
 }
 
-Vec2 HelloWorld::tilePosition(Sprite *s) {
+Vec2 GameLayer::tilePosition(Sprite *s) {
     return Vec2(
         s->getPositionX() / map->getTileSize().width,
         ((map->getMapSize().height * map->getTileSize().height) - s->getPositionY()) / map->getTileSize().height
@@ -213,7 +213,7 @@ Vec2 HelloWorld::tilePosition(Sprite *s) {
 }
 
 // returns 'b' for bottom, 'r' for right, 'l' for left, 't' for top, '\0' for no collision
-char HelloWorld::collide(Sprite *s1, Sprite *s2) {
+char GameLayer::collide(Sprite *s1, Sprite *s2) {
     // Algorithm slightly altered from
     // http://gamedev.stackexchange.com/a/29796/19034
     auto b1 = s1->getBoundingBox(), b2 = s2->getBoundingBox();

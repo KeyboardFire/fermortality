@@ -115,21 +115,24 @@ include_directories(
 
 set(GAME_SRC
   Classes/AppDelegate.cpp
-  Classes/GameLayer.cpp
-  Classes/HUDLayer.cpp
-  Classes/Creature.cpp
-  Classes/Enemies/Player.cpp
-  Classes/Enemies/Slime.cpp
+  Classes/GameScene/GameScene.cpp
+  Classes/GameScene/GameLayer.cpp
+  Classes/GameScene/HUDLayer.cpp
+  Classes/GameScene/Creature.cpp
+  Classes/GameScene/Enemies/Player.cpp
+  Classes/GameScene/Enemies/Slime.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
-  Classes/HUDLayer.h
-  Classes/Creature.h
-  Classes/Enemies/Enemies.h
-  Classes/Enemies/Player.h
-  Classes/Enemies/Slime.h
+  Classes/GameScene/GameScene.h
+  Classes/GameScene/GameLayer.h
+  Classes/GameScene/HUDLayer.h
+  Classes/GameScene/Creature.h
+  Classes/GameScene/Enemies/Enemies.h
+  Classes/GameScene/Enemies/Player.h
+  Classes/GameScene/Enemies/Slime.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

@@ -1,7 +1,7 @@
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
+#ifndef __GAME_LAYER_H__
+#define __GAME_LAYER_H__
 
-#include "../cocos2d/cocos/cocos2d.h"
+#include "cocos2d.h"
 #include "Creature.h"
 #include "Enemies/Enemies.h"
 #include "HUDLayer.h"
@@ -10,10 +10,10 @@
 
 USING_NS_CC;
 
-class HelloWorld: public cocos2d::Layer {
+class GameLayer: public cocos2d::Layer {
 public:
     // auto-generated "static create()" method
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(GameLayer);
 
     virtual bool init();
 
@@ -40,4 +40,4 @@ public:
     HUDLayer *hudLayer;
 };
 
-#endif // __HELLOWORLD_SCENE_H__
+#endif // __GAME_LAYER_H__

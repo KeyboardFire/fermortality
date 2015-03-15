@@ -1,7 +1,7 @@
 #ifndef __CREATURE_H__
 #define __CREATURE_H__
 
-#include "../cocos2d/cocos/cocos2d.h"
+#include "cocos2d.h"
 
 #include <string>
 

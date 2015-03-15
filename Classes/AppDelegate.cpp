@@ -1,6 +1,5 @@
 #include "AppDelegate.h"
-#include "GameLayer.h"
-#include "HUDLayer.h"
+#include "GameScene/GameScene.h"
 
 USING_NS_CC;
 
@@ -33,12 +32,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     // create a scene and run
-    auto scene = Scene::create();
-    HelloWorld *gameLayer = HelloWorld::create();
-    HUDLayer *hudLayer = HUDLayer::create();
-    gameLayer->hudLayer = hudLayer;
-    scene->addChild(gameLayer);
-    scene->addChild(hudLayer);
+    auto scene = GameScene::create();
     director->runWithScene(scene);
 
     return true;

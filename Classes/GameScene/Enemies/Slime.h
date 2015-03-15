@@ -1,7 +1,7 @@
 #ifndef __SLIME_H__
 #define __SLIME_H__
 
-#include "../../cocos2d/cocos/cocos2d.h"
+#include "cocos2d.h"
 
 #include "../Creature.h"
 
