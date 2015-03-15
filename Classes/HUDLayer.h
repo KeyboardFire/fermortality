@@ -15,6 +15,8 @@ public:
     virtual bool init();
     void updateHearts(int heartCount);
 
+    Texture2D *fullHeart, *emptyHeart;
+
     std::vector<Sprite*> hearts;
 };
 

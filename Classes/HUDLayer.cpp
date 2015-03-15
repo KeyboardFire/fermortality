@@ -15,12 +15,16 @@ bool HUDLayer::init() {
         hearts.push_back(heart);
     }
 
+    // this is a hack FIXME use sprite sheets
+    fullHeart = CCTextureCache::getInstance()->addImage("sprites/HUD/hud_heartFull.png");
+    emptyHeart = CCTextureCache::getInstance()->addImage("sprites/HUD/hud_heartEmpty.png");
+
     return true;
 }
 
 void HUDLayer::updateHearts(int heartCount) {
     for (int i = 0; i < 5; ++i) {
-        if (heartCount > i) hearts[i]->setOpacity(255);
-        else hearts[i]->setOpacity(0);
+        if (heartCount > i) hearts[i]->setTexture(fullHeart);
+        else hearts[i]->setTexture(emptyHeart);
     }
 }
