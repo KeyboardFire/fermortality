@@ -1,10 +1,12 @@
 #ifndef __GAME_LAYER_H__
 #define __GAME_LAYER_H__
 
+class GameScene; // forward declaration
+
 #include "cocos2d.h"
 #include "Creature.h"
 #include "Enemies/Enemies.h"
-#include "HUDLayer.h"
+#include "GameScene.h"
 
 #include <vector>
 
@@ -16,6 +18,8 @@ public:
     CREATE_FUNC(GameLayer);
 
     virtual bool init();
+
+    GameScene *scene;
 
     int screenWidth, screenHeight;
 
@@ -37,7 +41,6 @@ public:
 
     TMXTiledMap *map;
     TMXLayer *layer;
-    HUDLayer *hudLayer;
 };
 
 #endif // __GAME_LAYER_H__

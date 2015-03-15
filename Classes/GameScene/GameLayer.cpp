@@ -150,7 +150,7 @@ void GameLayer::update(float dt) {
     }
 
     // ugly hack
-    if (player->health != oldHealth) hudLayer->updateHearts(player->health);
+    if (player->health != oldHealth) scene->updateHearts(player->health);
     if (player->health == 0) std::cout << "player is kill :(" << std::endl;
 
     setPosition(Vec2(screenWidth/2 - player->getPositionX(), screenHeight/2 - player->getPositionY()));

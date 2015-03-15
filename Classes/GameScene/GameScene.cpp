@@ -1,6 +1,4 @@
 #include "GameScene.h"
-#include "GameLayer.h"
-#include "HUDLayer.h"
 
 USING_NS_CC;
 
@@ -9,11 +7,15 @@ bool GameScene::init() {
     // super init first
     if (!Scene::init()) return false;
 
-    GameLayer *gameLayer = GameLayer::create();
-    HUDLayer *hudLayer = HUDLayer::create();
-    gameLayer->hudLayer = hudLayer;
+    gameLayer = GameLayer::create();
+    hudLayer = HUDLayer::create();
+    gameLayer->scene = this;
     addChild(gameLayer);
     addChild(hudLayer);
 
     return true;
+}
+
+void GameScene::updateHearts(int health) {
+    hudLayer->updateHearts(health);
 }
