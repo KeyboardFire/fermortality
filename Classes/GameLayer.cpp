@@ -45,22 +45,32 @@ bool HelloWorld::init() {
     addChild(player, 1);
 
     // add slimes
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 25; ++i) {
         auto slime = Creature::create("slime");
-        bool stuckInTile;
+        bool retry;
         do {
             slime->setPosition(Vec2(
                 RandomHelper::random_int(0, (int) map->getContentSize().width),
                 RandomHelper::random_int(0, (int) map->getContentSize().height)
             ));
 
-            stuckInTile = false;
-            for (auto t : tiles) {
-                if (t->getBoundingBox().intersectsRect(slime->getBoundingBox())) {
-                    stuckInTile = true;
+            retry = false;
+
+            // no floating slimes
+            Vec2 stp = tilePosition(slime);
+            if (stp.y < map->getMapSize().height-1 && layer->getTileAt(Vec2((int)stp.x, (int)stp.y + 1)) == nullptr) {
+                retry = true;
+            }
+
+            // no slimes stuck in tiles
+            if (!retry) {
+                for (auto t : tiles) {
+                    if (t->getBoundingBox().intersectsRect(slime->getBoundingBox())) {
+                        retry = true;
+                    }
                 }
             }
-        } while (stuckInTile);
+        } while (retry);
         slime->setAnchorPoint(Vec2(0, 0));
         addChild(slime, 0);
         enemies.push_back(slime);
@@ -187,13 +197,19 @@ void HelloWorld::updateCreature(Creature *s) {
 
     int aiInfo = 0;
 
-    int sTileX = s->getPositionX() / map->getTileSize().width;
-    int sTileY = ((map->getMapSize().height * map->getTileSize().height) - s->getPositionY()) / map->getTileSize().height;
+    Vec2 stp = tilePosition(s);
 
-    if (layer->getTileAt(Vec2(sTileX - 1, sTileY + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffLeft;
-    if (layer->getTileAt(Vec2(sTileX + 1, sTileY + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffRight;
+    if (layer->getTileAt(Vec2((int)stp.x - 1, (int)stp.y + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffLeft;
+    if (layer->getTileAt(Vec2((int)stp.x + 1, (int)stp.y + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffRight;
 
     s->update(aiInfo);
+}
+
+Vec2 HelloWorld::tilePosition(Sprite *s) {
+    return Vec2(
+        s->getPositionX() / map->getTileSize().width,
+        ((map->getMapSize().height * map->getTileSize().height) - s->getPositionY()) / map->getTileSize().height
+    );
 }
 
 // returns 'b' for bottom, 'r' for right, 'l' for left, 't' for top, '\0' for no collision

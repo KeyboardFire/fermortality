@@ -30,6 +30,7 @@ public:
 
     virtual void update(float dt);
     void updateCreature(Creature *s);
+    Vec2 tilePosition(Sprite *s);
     char collide(Sprite *s1, Sprite *s2);
 
     bool cheat;
