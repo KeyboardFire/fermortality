@@ -20,7 +20,7 @@ bool HelloWorld::init() {
     addChild(map);
 
     // add slimes
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 10; ++i) {
         auto slime = Creature::create("slime");
         slime->setPosition(Vec2(
             RandomHelper::random_int(0, (int) map->getContentSize().width),
@@ -106,6 +106,8 @@ void HelloWorld::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 }
 
 void HelloWorld::update(float dt) {
+    int oldHealth = player->health;
+
     auto pVelocity = player->velocity;
     if (player->dir > 0 && pVelocity->x <  RUN_SPEED) pVelocity->x += RUN_ACCELERATION;
     if (player->dir < 0 && pVelocity->x > -RUN_SPEED) pVelocity->x -= RUN_ACCELERATION;
@@ -118,8 +120,6 @@ void HelloWorld::update(float dt) {
     for (auto s : enemies) {
         updateCreature(s);
 
-        s->update();
-
         char collision = collide(player, s);
         if (collision) {
             if (s->collidedWithPlayer(collision, player)) {
@@ -128,6 +128,10 @@ void HelloWorld::update(float dt) {
             }
         }
     }
+
+    // ugly hack
+    if (player->health != oldHealth) hudLayer->updateHearts(player->health);
+    if (player->health == 0) std::cout << "player is kill :(" << std::endl;
 
     setPosition(Vec2(screenWidth/2 - player->getPositionX(), screenHeight/2 - player->getPositionY()));
 }
@@ -169,6 +173,8 @@ void HelloWorld::updateCreature(Creature *s) {
                 break;
         }
     }
+
+    s->update();
 }
 
 // returns 'b' for bottom, 'r' for right, 'l' for left, 't' for top, '\0' for no collision

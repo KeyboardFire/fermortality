@@ -4,6 +4,7 @@
 #include "../cocos2d/cocos/cocos2d.h"
 #include "Creature.h"
 #include "Enemies/Enemies.h"
+#include "HUDLayer.h"
 
 #include <vector>
 
@@ -32,6 +33,8 @@ public:
     char collide(Sprite *s1, Sprite *s2);
 
     bool cheat;
+
+    HUDLayer *hudLayer;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

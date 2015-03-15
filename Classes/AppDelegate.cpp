@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "GameLayer.h"
+#include "HUDLayer.h"
 
 USING_NS_CC;
 
@@ -33,8 +34,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene and run
     auto scene = Scene::create();
-    auto layer = HelloWorld::create();
-    scene->addChild(layer);
+    HelloWorld *gameLayer = HelloWorld::create();
+    HUDLayer *hudLayer = HUDLayer::create();
+    gameLayer->hudLayer = hudLayer;
+    scene->addChild(gameLayer);
+    scene->addChild(hudLayer);
     director->runWithScene(scene);
 
     return true;

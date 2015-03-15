@@ -116,6 +116,7 @@ include_directories(
 set(GAME_SRC
   Classes/AppDelegate.cpp
   Classes/GameLayer.cpp
+  Classes/HUDLayer.cpp
   Classes/Creature.cpp
   Classes/Enemies/Player.cpp
   Classes/Enemies/Slime.cpp
@@ -124,7 +125,7 @@ set(GAME_SRC
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
-  Classes/GameLayer.h
+  Classes/HUDLayer.h
   Classes/Creature.h
   Classes/Enemies/Enemies.h
   Classes/Enemies/Player.h

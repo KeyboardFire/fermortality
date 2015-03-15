@@ -12,5 +12,6 @@ bool Slime::collidedWithPlayer(char dir, Creature *player) {
         removeFromParent();
         return true;
     }
+    player->damage(1);
     return false;
 }

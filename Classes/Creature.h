@@ -12,6 +12,7 @@ public:
     virtual std::string filename() { return "must be overridden"; };
     virtual void update() { };
     virtual bool collidedWithPlayer(char dir, Creature *player) {};
+    virtual void damage(int amount) { health -= amount; };
     static Creature* create(std::string type);
 
     // this has to be implemented in the header because C++ is idiotic
@@ -20,6 +21,7 @@ public:
             c->autorelease();
 
             c->velocity = new Vec2(0, 0); // TODO we have to delete this somewhere
+            c->health = 1;
 
             return c;
         }
@@ -29,6 +31,7 @@ public:
     };
 
     Vec2 *velocity;
+    int health;
 };
 
 #endif // __CREATURE_H__
