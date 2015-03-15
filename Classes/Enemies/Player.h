@@ -12,7 +12,7 @@ public:
     Player();
     virtual std::string filename() { return "sprites/Player/p1_stand.png"; };
     virtual void damage(int amount);
-    virtual void update();
+    virtual void update(int aiInfo);
     static Player* create();
     int dir;
     int invulnTime;

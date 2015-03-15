@@ -19,7 +19,7 @@ void Player::damage(int amount) {
     }
 }
 
-void Player::update() {
+void Player::update(int aiInfo) {
     if (invulnTime) {
         if (!--invulnTime) setOpacity(255);
         else setOpacity(150 + (invulnTime * 5 % 105));

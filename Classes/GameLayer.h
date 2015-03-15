@@ -34,6 +34,8 @@ public:
 
     bool cheat;
 
+    TMXTiledMap *map;
+    TMXLayer *layer;
     HUDLayer *hudLayer;
 };
 

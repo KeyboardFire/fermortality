@@ -16,29 +16,11 @@ bool HelloWorld::init() {
     screenHeight = Director::getInstance()->getOpenGLView()->getFrameSize().height;
 
     // add tilemap
-    auto map = TMXTiledMap::create("tileset.tmx");
+    map = TMXTiledMap::create("tileset.tmx");
     addChild(map);
 
-    // add slimes
-    for (int i = 0; i < 10; ++i) {
-        auto slime = Creature::create("slime");
-        slime->setPosition(Vec2(
-            RandomHelper::random_int(0, (int) map->getContentSize().width),
-            RandomHelper::random_int(0, (int) map->getContentSize().height)
-        ));
-        slime->setAnchorPoint(Vec2(0, 0));
-        addChild(slime, 0);
-        enemies.push_back(slime);
-    }
-
-    // add player sprite
-    player = Player::create();
-    player->setPosition(Vec2(map->getTileSize().width, map->getTileSize().height));
-    player->setAnchorPoint(Vec2(0, 0));
-    addChild(player, 1);
-
     // set up collision detection
-    auto layer = map->getLayer("Tile Layer 1");
+    layer = map->getLayer("Tile Layer 1");
     for (int x = 0; x < layer->getLayerSize().width; ++x) {
         for (int y = 0; y < layer->getLayerSize().height; ++y) {
             auto tile = layer->getTileAt(Vec2(x, y));
@@ -54,6 +36,34 @@ bool HelloWorld::init() {
                 }
             }
         }
+    }
+
+    // add player sprite
+    player = Player::create();
+    player->setPosition(Vec2(map->getTileSize().width, map->getTileSize().height));
+    player->setAnchorPoint(Vec2(0, 0));
+    addChild(player, 1);
+
+    // add slimes
+    for (int i = 0; i < 100; ++i) {
+        auto slime = Creature::create("slime");
+        bool stuckInTile;
+        do {
+            slime->setPosition(Vec2(
+                RandomHelper::random_int(0, (int) map->getContentSize().width),
+                RandomHelper::random_int(0, (int) map->getContentSize().height)
+            ));
+
+            stuckInTile = false;
+            for (auto t : tiles) {
+                if (t->getBoundingBox().intersectsRect(slime->getBoundingBox())) {
+                    stuckInTile = true;
+                }
+            }
+        } while (stuckInTile);
+        slime->setAnchorPoint(Vec2(0, 0));
+        addChild(slime, 0);
+        enemies.push_back(slime);
     }
 
     // add keyboard listener
@@ -140,6 +150,7 @@ void HelloWorld::updateCreature(Creature *s) {
     auto v = s->velocity;
 
     v->y -= GRAVITY;
+    if (v->y < -20) v->y = -20; // TODO figure this hack out
 
     float px = s->getPositionX() + v->x,
         py = s->getPositionY() + v->y;
@@ -174,7 +185,15 @@ void HelloWorld::updateCreature(Creature *s) {
         }
     }
 
-    s->update();
+    int aiInfo = 0;
+
+    int sTileX = s->getPositionX() / map->getTileSize().width;
+    int sTileY = ((map->getMapSize().height * map->getTileSize().height) - s->getPositionY()) / map->getTileSize().height;
+
+    if (layer->getTileAt(Vec2(sTileX - 1, sTileY + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffLeft;
+    if (layer->getTileAt(Vec2(sTileX + 1, sTileY + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffRight;
+
+    s->update(aiInfo);
 }
 
 // returns 'b' for bottom, 'r' for right, 'l' for left, 't' for top, '\0' for no collision

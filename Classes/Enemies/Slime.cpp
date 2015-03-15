@@ -1,7 +1,10 @@
 #include "Slime.h"
 
-void Slime::update() {
-    velocity->x += RandomHelper::random_real<float>(-0.5, 0.5);
+void Slime::update(int aiInfo) {
+    velocity->x += RandomHelper::random_real<float>(
+        (aiInfo & AIInfo::cliffLeft ? 0 : -0.5),
+        (aiInfo & AIInfo::cliffRight ? 0 : 0.5)
+    );
     if (velocity->y == 0 && RandomHelper::random_int(0, 15) == 0) {
         velocity->y += 9;
     }

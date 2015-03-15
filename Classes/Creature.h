@@ -10,7 +10,7 @@ USING_NS_CC;
 class Creature: public cocos2d::Sprite {
 public:
     virtual std::string filename() { return "must be overridden"; };
-    virtual void update() { };
+    virtual void update(int aiInfo) { };
     virtual bool collidedWithPlayer(char dir, Creature *player) {};
     virtual void damage(int amount) { health -= amount; };
     static Creature* create(std::string type);
@@ -32,6 +32,8 @@ public:
 
     Vec2 *velocity;
     int health;
+
+    enum AIInfo { cliffLeft = 1, cliffRight = 2 /*, foo = 4, ...*/  };
 };
 
 #endif // __CREATURE_H__
