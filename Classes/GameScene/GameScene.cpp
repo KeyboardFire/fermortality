@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include "../SceneDispatcher.h"
 
 USING_NS_CC;
 
@@ -18,4 +19,7 @@ bool GameScene::init() {
 
 void GameScene::updateHearts(int health) {
     hudLayer->updateHearts(health);
+    if (health <= 0) {
+        SceneDispatcher::mainMenuScene(true);
+    }
 }
