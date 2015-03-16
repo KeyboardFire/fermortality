@@ -50,15 +50,15 @@ bool GameLayer::init() {
         bool retry;
         do {
             slime->setPosition(Vec2(
-                RandomHelper::random_int(0, (int) map->getContentSize().width),
-                RandomHelper::random_int(0, (int) map->getContentSize().height)
+                RandomHelper::random_int(1, (int) map->getContentSize().width-1),
+                RandomHelper::random_int(1, (int) map->getContentSize().height-1)
             ));
 
             retry = false;
 
             // no floating slimes
             Vec2 stp = tilePosition(slime);
-            if (stp.y < map->getMapSize().height-1 && layer->getTileAt(Vec2((int)stp.x, (int)stp.y + 1)) == nullptr) {
+            if (layer->getTileAt(Vec2((int)stp.x, (int)stp.y + 1)) == nullptr) {
                 retry = true;
             }
 
