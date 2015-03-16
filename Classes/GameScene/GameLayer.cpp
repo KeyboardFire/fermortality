@@ -50,8 +50,8 @@ bool GameLayer::init() {
         bool retry;
         do {
             slime->setPosition(Vec2(
-                RandomHelper::random_int(1, (int) map->getContentSize().width-1),
-                RandomHelper::random_int(1, (int) map->getContentSize().height-1)
+                RandomHelper::random_int((int) map->getTileSize().width, (int) (map->getContentSize().width - map->getTileSize().width)),
+                RandomHelper::random_int((int) map->getTileSize().height, (int) (map->getContentSize().height - map->getTileSize().height))
             ));
 
             retry = false;
