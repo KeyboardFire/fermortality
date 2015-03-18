@@ -4,10 +4,6 @@ THE BIG FERMORTALITY TODO LIST
 CONTENT / FEATURES
 ------------------
 
-- Player spritesheet
-  - Walking animation
-  - Jumping animation
-  - Look up / duck (up arrow / down arrow respectively)
 - Player knockback (goomba stomping, getting hit)
 - Picking up objects (duck+action)
   - Throwing objects (action while holding an object, can be modified by
@@ -29,3 +25,4 @@ ASSETS (ART / MUSIC)
 - Make the graphics better...
 - Add background music
 - Add background image
+- Player walking/jumping animations
