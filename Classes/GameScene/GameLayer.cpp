@@ -202,24 +202,6 @@ void GameLayer::update(float dt) {
 
     updateCreature(player);
 
-    // TODO move this stuff into player.update()
-    if (player->whip != nullptr) {
-        player->whip->setFlippedX(player->isFlippedX());
-        player->whip->setAnchorPoint(Vec2(player->isFlippedX() ? 0 : 1, 0.5));
-        player->whip->setPositionX(player->getHandPosition().x);
-        player->whip->setPositionY(player->getHandPosition().y);
-
-        int *whipTime = (int*) player->whip->getUserData();
-        if (--(*whipTime) == 0) {
-            delete whipTime;
-            player->whip->removeFromParent();
-            player->whip = nullptr;
-        }
-    }
-    if (player->objectHeld != nullptr) {
-        player->objectHeld->setPosition(player->getHandPosition());
-    }
-
     // ugly hack
     if (player->health != oldHealth) scene->updateHearts(player->health);
 

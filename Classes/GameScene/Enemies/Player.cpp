@@ -28,6 +28,24 @@ void Player::update(int aiInfo) {
         if (!--invulnTime) setOpacity(255);
         else setOpacity(150 + (invulnTime * 5 % 105));
     }
+
+    if (whip != nullptr) {
+        whip->setFlippedX(isFlippedX());
+        whip->setAnchorPoint(Vec2(isFlippedX() ? 0 : 1, 0.5));
+        whip->setPositionX(getHandPosition().x);
+        whip->setPositionY(getHandPosition().y);
+
+        int *whipTime = (int*) whip->getUserData();
+        if (--(*whipTime) == 0) {
+            delete whipTime;
+            whip->removeFromParent();
+            whip = nullptr;
+        }
+    }
+
+    if (objectHeld != nullptr) {
+        objectHeld->setPosition(getHandPosition());
+    }
 }
 
 Vec2 Player::getHandPosition() {
