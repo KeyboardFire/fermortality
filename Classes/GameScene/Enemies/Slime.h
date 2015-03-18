@@ -10,6 +10,7 @@ USING_NS_CC;
 class Slime: public Creature {
     virtual std::string filename() { return "slime.png"; };
     virtual void collidedWithPlayer(char dir, Creature *player);
+    virtual void collidedWithWhip(Sprite *whip);
     virtual void update(int aiInfo);
 };
 

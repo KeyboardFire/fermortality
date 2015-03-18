@@ -17,3 +17,7 @@ void Slime::collidedWithPlayer(char dir, Creature *player) {
         player->damage(1);
     }
 }
+
+void Slime::collidedWithWhip(Sprite *whip) {
+    damage(1);
+}

@@ -14,6 +14,7 @@ public:
     SpriteFrame* getFrame(int i);
     virtual void update(int aiInfo) {};
     virtual void collidedWithPlayer(char dir, Creature *player) {};
+    virtual void collidedWithWhip(Sprite *whip) {};
     virtual void damage(int amount) { health -= amount; };
     static Creature* create(std::string type);
 

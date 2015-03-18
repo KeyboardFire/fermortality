@@ -191,9 +191,8 @@ void GameLayer::update(float dt) {
             s->collidedWithPlayer(collision, player);
         }
 
-        // TODO move this into each enemy's code
         if (player->whip != nullptr && player->whip->getBoundingBox().intersectsRect(s->getBoundingBox())) {
-            s->damage(1);
+            s->collidedWithWhip(player->whip);
         }
 
         if (s->health <= 0) {
