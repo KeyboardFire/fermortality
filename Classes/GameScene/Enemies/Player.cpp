@@ -27,3 +27,10 @@ void Player::update(int aiInfo) {
         else setOpacity(150 + (invulnTime * 5 % 105));
     }
 }
+
+Vec2 Player::getHandPosition() {
+    return Vec2(
+        getPositionX() + (isFlippedX() ? getContentSize().width : 0),
+        getPositionY() + getContentSize().height / 2
+    );
+}

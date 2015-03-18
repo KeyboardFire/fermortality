@@ -14,10 +14,11 @@ public:
     virtual Vec3 frameSize() { return Vec3(48, 48, 3); };
     virtual void damage(int amount);
     virtual void update(int aiInfo);
+    Vec2 getHandPosition();
     static Player* create();
     int dir, lookDir;
     int invulnTime;
-    Sprite *whip;
+    Sprite *whip, *objectHeld;
 };
 
 #endif // __PLAYER_H__

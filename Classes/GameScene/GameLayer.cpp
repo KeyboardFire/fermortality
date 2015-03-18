@@ -125,12 +125,25 @@ void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
             }
             break;
         case EventKeyboard::KeyCode::KEY_X:
-            if (player->whip == nullptr) {
-                player->whip = Sprite::create("whip.png");
-                int *whipTime = new int(30);
-                player->whip->setUserData((void*) whipTime);
-                player->whip->setAnchorPoint(Vec2(1, 0.5));
-                addChild(player->whip);
+            switch (player->lookDir) {
+                case 0:
+                case 1:
+                    if (player->whip == nullptr) {
+                        player->whip = Sprite::create("whip.png");
+                        int *whipTime = new int(30);
+                        player->whip->setUserData((void*) whipTime);
+                        player->whip->setAnchorPoint(Vec2(1, 0.5));
+                        addChild(player->whip);
+                    }
+                    break;
+                case -1:
+                    for (auto s : enemies) {
+                        if (player->getBoundingBox().intersectsRect(s->getBoundingBox())) {
+                            player->objectHeld = s;
+                            break;
+                        }
+                    }
+                    break;
             }
             break;
     }
@@ -166,21 +179,6 @@ void GameLayer::update(float dt) {
     }
     if (player->dir == 0) pVelocity->x *= RUN_FRICTION;
 
-    updateCreature(player);
-
-    if (player->whip != nullptr) {
-        player->whip->setFlippedX(player->isFlippedX());
-        player->whip->setPositionX(player->getPositionX() + (player->isFlippedX() ? player->getContentSize().width * 2 : 0));
-        player->whip->setPositionY(player->getPositionY() + player->getContentSize().height / 2);
-
-        int *whipTime = (int*) player->whip->getUserData();
-        if (--(*whipTime) == 0) {
-            delete whipTime;
-            player->whip->removeFromParent();
-            player->whip = nullptr;
-        }
-    }
-
     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
         auto s = *it;
 
@@ -200,6 +198,26 @@ void GameLayer::update(float dt) {
             enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
             --it;
         }
+    }
+
+    updateCreature(player);
+
+    // TODO move this stuff into player.update()
+    if (player->whip != nullptr) {
+        player->whip->setFlippedX(player->isFlippedX());
+        player->whip->setAnchorPoint(Vec2(player->isFlippedX() ? 0 : 1, 0.5));
+        player->whip->setPositionX(player->getHandPosition().x);
+        player->whip->setPositionY(player->getHandPosition().y);
+
+        int *whipTime = (int*) player->whip->getUserData();
+        if (--(*whipTime) == 0) {
+            delete whipTime;
+            player->whip->removeFromParent();
+            player->whip = nullptr;
+        }
+    }
+    if (player->objectHeld != nullptr) {
+        player->objectHeld->setPosition(player->getHandPosition());
     }
 
     // ugly hack
