@@ -9,6 +9,6 @@ EOS
 chmod +x Fermortality.sh
 cd ..
 cp -r linux Fermortality
-tar czf Fermortality.tar.gz Fermortality
+tar czf Fermortality-ubuntu.tar.gz Fermortality
 rm -r Fermortality
-mv Fermortality.tar.gz ../..
+mv Fermortality-ubuntu.tar.gz ../..
