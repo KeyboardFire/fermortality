@@ -17,6 +17,7 @@ public:
     Vec2 getHandPosition();
     static Player* create();
     int dir, lookDir;
+    bool isRunning;
     int invulnTime;
     Sprite *whip;
     Creature *objectHeld;

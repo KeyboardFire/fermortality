@@ -118,6 +118,9 @@ void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
             player->dir = player->dir > 0 ? -2 : -1;
             break;
+        case EventKeyboard::KeyCode::KEY_SHIFT:
+            player->isRunning = true;
+            break;
         case EventKeyboard::KeyCode::KEY_Z:
             // can only jump when standing still on ground
             if (pVelocity->y == 0) {
@@ -171,6 +174,9 @@ void GameLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
             player->dir = player->dir == -1 ? 0 : (player->dir == -2 ? 1 : (player->dir == 2 ? 1 : player->dir));
             break;
+        case EventKeyboard::KeyCode::KEY_SHIFT:
+            player->isRunning = false;
+            break;
         default: // to get rid of annoying warnings
             break;
     }
@@ -180,12 +186,12 @@ void GameLayer::update(float dt) {
     int oldHealth = player->health;
 
     auto pVelocity = player->velocity;
-    if (player->dir > 0 && pVelocity->x < RUN_SPEED) {
-        pVelocity->x += RUN_ACCELERATION;
+    if (player->dir > 0 && pVelocity->x < RUN_SPEED * (player->isRunning ? 2 : 1)) {
+        pVelocity->x += RUN_ACCELERATION * (player->isRunning ? 2 : 1);
         player->setFlippedX(true);
     }
-    if (player->dir < 0 && pVelocity->x > -RUN_SPEED) {
-        pVelocity->x -= RUN_ACCELERATION;
+    if (player->dir < 0 && pVelocity->x > -RUN_SPEED * (player->isRunning ? 2 : 1)) {
+        pVelocity->x -= RUN_ACCELERATION * (player->isRunning ? 2 : 1);
         player->setFlippedX(false);
     }
     if (player->dir == 0) pVelocity->x *= PLAYER_FRICTION;

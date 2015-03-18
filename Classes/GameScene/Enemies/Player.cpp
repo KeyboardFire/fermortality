@@ -3,7 +3,7 @@
 
 USING_NS_CC;
 
-Player::Player(): dir(0), lookDir(0), invulnTime(0) {
+Player::Player(): dir(0), lookDir(0), isRunning(false), invulnTime(0) {
 }
 
 Player* Player::create() {
