@@ -10,7 +10,7 @@ USING_NS_CC;
 class Player: public Creature {
 public:
     Player();
-    virtual std::string filename() { return "sprites/Player/p1_stand.png"; };
+    virtual std::string filename() { return "player.png"; };
     virtual void damage(int amount);
     virtual void update(int aiInfo);
     static Player* create();

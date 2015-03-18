@@ -8,7 +8,7 @@ bool HUDLayer::init() {
     if (!Layer::init()) return false;
 
     for (int i = 1; i <= 5; ++i) {
-        auto heart = Sprite::create("sprites/HUD/hud_heartFull.png");
+        auto heart = Sprite::create("heartFull.png");
         auto size = heart->getContentSize();
         heart->setPosition(Vec2(i * (size.width + 10) - 10, size.height));
         addChild(heart);
@@ -16,8 +16,8 @@ bool HUDLayer::init() {
     }
 
     // this is a hack FIXME use sprite sheets
-    fullHeart = CCTextureCache::getInstance()->addImage("sprites/HUD/hud_heartFull.png");
-    emptyHeart = CCTextureCache::getInstance()->addImage("sprites/HUD/hud_heartEmpty.png");
+    fullHeart = CCTextureCache::getInstance()->addImage("heartFull.png");
+    emptyHeart = CCTextureCache::getInstance()->addImage("heartEmpty.png");
 
     return true;
 }

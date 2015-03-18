@@ -16,7 +16,7 @@ bool GameLayer::init() {
     screenHeight = Director::getInstance()->getOpenGLView()->getFrameSize().height;
 
     // add tilemap
-    map = TMXTiledMap::create("tileset.tmx");
+    map = TMXTiledMap::create("tilemap.tmx");
     addChild(map);
 
     // set up collision detection
@@ -137,14 +137,16 @@ void GameLayer::update(float dt) {
 
     updateCreature(player);
 
-    for (auto s : enemies) {
+    for (auto it = enemies.begin(); it != enemies.end(); ++it) {
+        auto s = *it;
+
         updateCreature(s);
 
         char collision = collide(player, s);
         if (collision) {
             if (s->collidedWithPlayer(collision, player)) {
                 enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
-                continue;
+                --it;
             }
         }
     }
@@ -161,12 +163,36 @@ void GameLayer::updateCreature(Creature *s) {
     v->y -= GRAVITY;
     if (v->y < -20) v->y = -20; // TODO figure this hack out
 
-    float px = s->getPositionX() + v->x,
-        py = s->getPositionY() + v->y;
-    s->setPosition(Vec2(round(px), round(py)));
+    int px = s->getPositionX() + round(v->x),
+        py = s->getPositionY() + round(v->y);
+    s->setPosition(Vec2(px, py));
 
+    std::vector<Sprite*> collisions;
     for (auto tile : tiles) {
-        switch (collide(s, tile)) {
+        if (fabs(s->getPositionX() - tile->getPositionX()) <= map->getTileSize().width &&
+            fabs(s->getPositionY() - tile->getPositionY()) <= map->getTileSize().height) {
+            collisions.push_back(tile);
+        }
+    }
+
+    char collideDir;
+    for (auto tile : collisions) {
+        collideDir = collide(s, tile, true);
+
+        // the following section exists because sometimes (read: often) the
+        // player will move multiple pixels in a frame, gliding over 1-wide
+        // pits or failing to enter 1-wide holes in walls. this solves the
+        // problem by putting the player inside them anyway if he's "close
+        // enough." yes, it's a hack. a very ugly one. but it works.
+        if (s == player && collideDir >= 'A' && collideDir <= 'Z' && collisions.size() == 1) {
+            // shift it inside so it doesn't pop back out
+            if (collideDir == 'B') s->setPositionY(s->getPositionY() - THRESHOLD);
+            collideDir = (collideDir == 'B' || collideDir == 'T') ?
+                (s->getPositionX() < tile->getPositionX() ? 'r' : 'l') :
+                (s->getPositionY() < tile->getPositionY() ? 't' : 'b');
+        }
+
+        switch (collideDir) {
             case 'b':
                 v->y = 0;
                 while (s->getBoundingBox().intersectsRect(tile->getBoundingBox())) {
@@ -198,6 +224,11 @@ void GameLayer::updateCreature(Creature *s) {
 
     Vec2 stp = tilePosition(s);
 
+    if ((int)stp.x == 0) ++stp.x;
+    if ((int)stp.x == layer->getLayerSize().width - 1) --stp.x;
+    if ((int)stp.y == 0) ++stp.y;
+    if ((int)stp.y == layer->getLayerSize().height - 1) --stp.y;
+
     if (layer->getTileAt(Vec2((int)stp.x - 1, (int)stp.y + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffLeft;
     if (layer->getTileAt(Vec2((int)stp.x + 1, (int)stp.y + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffRight;
 
@@ -212,7 +243,7 @@ Vec2 GameLayer::tilePosition(Sprite *s) {
 }
 
 // returns 'b' for bottom, 'r' for right, 'l' for left, 't' for top, '\0' for no collision
-char GameLayer::collide(Sprite *s1, Sprite *s2) {
+char GameLayer::collide(Sprite *s1, Sprite *s2, bool veryclose) {
     // Algorithm slightly altered from
     // http://gamedev.stackexchange.com/a/29796/19034
     auto b1 = s1->getBoundingBox(), b2 = s2->getBoundingBox();
@@ -225,15 +256,15 @@ char GameLayer::collide(Sprite *s1, Sprite *s2) {
         float wy = w * dy, hx = h * dx;
         if (wy > hx) {
             if (wy > -hx) {
-                return 'b';
+                return (veryclose && w - fabs(dx) < THRESHOLD ? 'B' : 'b');
             } else {
-                return 'r';
+                return (veryclose && h - fabs(dy) < THRESHOLD ? 'R' : 'r');
             }
         } else {
             if (wy > -hx) {
-                return 'l';
+                return (veryclose && h - fabs(dy) < THRESHOLD ? 'L' : 'l');
             } else {
-                return 't';
+                return (veryclose && w - fabs(dx) < THRESHOLD ? 'T' : 't');
             }
         }
     }

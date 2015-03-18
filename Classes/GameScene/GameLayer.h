@@ -35,12 +35,14 @@ public:
     virtual void update(float dt);
     void updateCreature(Creature *s);
     Vec2 tilePosition(Sprite *s);
-    char collide(Sprite *s1, Sprite *s2);
+    char collide(Sprite *s1, Sprite *s2, bool veryclose = false);
 
     bool cheat;
 
     TMXTiledMap *map;
     TMXLayer *layer;
+
+    const int THRESHOLD = 4;
 };
 
 #endif // __GAME_LAYER_H__
