@@ -104,6 +104,14 @@ void GameLayer::placeSprite(Sprite *s) {
 void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     auto pVelocity = player->velocity;
     switch (keyCode) {
+        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+            player->lookDir = 1;
+            player->setSpriteFrame(player->getFrame(1));
+            break;
+        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+            player->lookDir = -1;
+            player->setSpriteFrame(player->getFrame(2));
+            break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             player->dir = player->dir < 0 ? 2 : 1;
             break;
@@ -130,6 +138,11 @@ void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
 
 void GameLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
     switch (keyCode) {
+        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+            player->lookDir = 0;
+            player->setSpriteFrame(player->getFrame(0));
+            break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             player->dir = player->dir == 1 ? 0 : (player->dir == 2 ? -1 : (player->dir == -2 ? -1 : player->dir));
             break;

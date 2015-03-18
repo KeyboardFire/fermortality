@@ -11,3 +11,7 @@ Creature* Creature::create(std::string type) {
 
     return Creature::setupCreature<Creature>(c);
 }
+
+SpriteFrame* Creature::getFrame(int i) {
+    return SpriteFrameCache::getInstance()->getSpriteFrameByName(filename() + std::to_string(i));
+}

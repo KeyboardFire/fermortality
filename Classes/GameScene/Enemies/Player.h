@@ -11,10 +11,11 @@ class Player: public Creature {
 public:
     Player();
     virtual std::string filename() { return "player.png"; };
+    virtual Vec3 frameSize() { return Vec3(48, 48, 3); };
     virtual void damage(int amount);
     virtual void update(int aiInfo);
     static Player* create();
-    int dir;
+    int dir, lookDir;
     int invulnTime;
     Sprite *whip;
 };
