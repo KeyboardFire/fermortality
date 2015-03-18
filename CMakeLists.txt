@@ -21,6 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 # ****************************************************************************/
+
+# TODO remove for release! this is only for debugging
+set(CMAKE_BUILD_TYPE Debug)
+
 cmake_policy(SET CMP0017 NEW)
 
 cmake_minimum_required(VERSION 2.8)
