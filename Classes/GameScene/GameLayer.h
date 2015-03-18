@@ -39,8 +39,6 @@ public:
     Vec2 tilePosition(Sprite *s);
     char collide(Sprite *s1, Sprite *s2, bool veryclose = false);
 
-    Sprite* whip;
-
     TMXTiledMap *map;
     TMXLayer *layer;
 

@@ -13,5 +13,7 @@ CONTENT / FEATURES
 ORGANIZATION / INTERNAL
 -----------------------
 
-- Refactor GameLayer.whip -> Player.whip
+- Change the name of Creature.* and Enemies/* to more accurately reflect what
+  they are (a rock is technically a "Creature" and an "Enemy" and the player is
+  classified as an "Enemy"
 - `egrep -Ri 'todo|fixme' Classes`

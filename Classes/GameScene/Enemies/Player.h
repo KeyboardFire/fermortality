@@ -16,6 +16,7 @@ public:
     static Player* create();
     int dir;
     int invulnTime;
+    Sprite *whip;
 };
 
 #endif // __PLAYER_H__

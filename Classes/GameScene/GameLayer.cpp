@@ -117,12 +117,12 @@ void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
             }
             break;
         case EventKeyboard::KeyCode::KEY_X:
-            if (whip == nullptr) {
-                whip = Sprite::create("whip.png");
+            if (player->whip == nullptr) {
+                player->whip = Sprite::create("whip.png");
                 int *whipTime = new int(30);
-                whip->setUserData((void*) whipTime);
-                whip->setAnchorPoint(Vec2(1, 0.5));
-                addChild(whip);
+                player->whip->setUserData((void*) whipTime);
+                player->whip->setAnchorPoint(Vec2(1, 0.5));
+                addChild(player->whip);
             }
             break;
     }
@@ -155,16 +155,16 @@ void GameLayer::update(float dt) {
 
     updateCreature(player);
 
-    if (whip != nullptr) {
-        whip->setFlippedX(player->isFlippedX());
-        whip->setPositionX(player->getPositionX() + (player->isFlippedX() ? player->getContentSize().width * 2 : 0));
-        whip->setPositionY(player->getPositionY() + player->getContentSize().height / 2);
+    if (player->whip != nullptr) {
+        player->whip->setFlippedX(player->isFlippedX());
+        player->whip->setPositionX(player->getPositionX() + (player->isFlippedX() ? player->getContentSize().width * 2 : 0));
+        player->whip->setPositionY(player->getPositionY() + player->getContentSize().height / 2);
 
-        int *whipTime = (int*) whip->getUserData();
+        int *whipTime = (int*) player->whip->getUserData();
         if (--(*whipTime) == 0) {
             delete whipTime;
-            whip->removeFromParent();
-            whip = nullptr;
+            player->whip->removeFromParent();
+            player->whip = nullptr;
         }
     }
 
@@ -179,7 +179,7 @@ void GameLayer::update(float dt) {
         }
 
         // TODO move this into each enemy's code
-        if (whip != nullptr && whip->getBoundingBox().intersectsRect(s->getBoundingBox())) {
+        if (player->whip != nullptr && player->whip->getBoundingBox().intersectsRect(s->getBoundingBox())) {
             s->damage(1);
         }
 
