@@ -9,6 +9,9 @@ CONTENT / FEATURES
   - Jumping animation
   - Look up / duck (up arrow / down arrow respectively)
 - Player knockback (goomba stomping, getting hit)
+- Picking up objects (duck+action)
+  - Throwing objects (action while holding an object, can be modified by
+    up/down arrow keys)
 
 ORGANIZATION / INTERNAL
 -----------------------
@@ -16,4 +19,13 @@ ORGANIZATION / INTERNAL
 - Change the name of Creature.* and Enemies/* to more accurately reflect what
   they are (a rock is technically a "Creature" and an "Enemy" and the player is
   classified as an "Enemy"
+- "Is alive" flag for Creatures/whatever they're going to be called, used for
+  determining whether to compute AI info and for whether they can be picked up
 - `egrep -Ri 'todo|fixme' Classes`
+
+ASSETS (ART / MUSIC)
+--------------------
+
+- Make the graphics better...
+- Add background music
+- Add background image
