@@ -125,26 +125,35 @@ void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
             }
             break;
         case EventKeyboard::KeyCode::KEY_X:
-            switch (player->lookDir) {
-                case 0:
-                case 1:
-                    if (player->whip == nullptr) {
-                        player->whip = Sprite::create("whip.png");
-                        int *whipTime = new int(30);
-                        player->whip->setUserData((void*) whipTime);
-                        player->whip->setAnchorPoint(Vec2(1, 0.5));
-                        addChild(player->whip);
-                    }
-                    break;
-                case -1:
-                    for (auto s : enemies) {
-                        if (player->getBoundingBox().intersectsRect(s->getBoundingBox())) {
-                            player->objectHeld = s;
-                            break;
+            if (player->objectHeld != nullptr) {
+                // throw / drop (TODO) object
+                player->objectHeld->velocity->x = 25 * (player->isFlippedX() ? 1 : -1);
+                player->objectHeld->velocity->y = 5;
+                player->objectHeld = nullptr;
+            } else {
+                switch (player->lookDir) {
+                    case 0:
+                    case 1:
+                        if (player->whip == nullptr) {
+                            player->whip = Sprite::create("whip.png");
+                            int *whipTime = new int(30);
+                            player->whip->setUserData((void*) whipTime);
+                            player->whip->setAnchorPoint(Vec2(1, 0.5));
+                            addChild(player->whip);
                         }
-                    }
-                    break;
+                        break;
+                    case -1:
+                        for (auto s : enemies) {
+                            if (player->getBoundingBox().intersectsRect(s->getBoundingBox())) {
+                                player->objectHeld = s;
+                                break;
+                            }
+                        }
+                        break;
+                }
             }
+            break;
+        default: // to get rid of annoying warnings
             break;
     }
 }
@@ -162,6 +171,8 @@ void GameLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
             player->dir = player->dir == -1 ? 0 : (player->dir == -2 ? 1 : (player->dir == 2 ? 1 : player->dir));
             break;
+        default: // to get rid of annoying warnings
+            break;
     }
 }
 
@@ -177,7 +188,7 @@ void GameLayer::update(float dt) {
         pVelocity->x -= RUN_ACCELERATION;
         player->setFlippedX(false);
     }
-    if (player->dir == 0) pVelocity->x *= RUN_FRICTION;
+    if (player->dir == 0) pVelocity->x *= PLAYER_FRICTION;
 
     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
         auto s = *it;
@@ -213,6 +224,9 @@ void GameLayer::updateCreature(Creature *s) {
 
     v->y -= GRAVITY;
     if (v->y < -20) v->y = -20; // TODO figure this hack out
+
+    // don't apply to player for more accurate run speed
+    if (s != player) v->x *= FRICTION;
 
     int px = s->getPositionX() + round(v->x),
         py = s->getPositionY() + round(v->y);

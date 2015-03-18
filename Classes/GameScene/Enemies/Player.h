@@ -18,7 +18,8 @@ public:
     static Player* create();
     int dir, lookDir;
     int invulnTime;
-    Sprite *whip, *objectHeld;
+    Sprite *whip;
+    Creature *objectHeld;
 };
 
 #endif // __PLAYER_H__

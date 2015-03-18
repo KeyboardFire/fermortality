@@ -29,11 +29,13 @@ void Player::update(int aiInfo) {
         else setOpacity(150 + (invulnTime * 5 % 105));
     }
 
+    int handX = getHandPosition().x, handY = getHandPosition().y;
+
     if (whip != nullptr) {
         whip->setFlippedX(isFlippedX());
         whip->setAnchorPoint(Vec2(isFlippedX() ? 0 : 1, 0.5));
-        whip->setPositionX(getHandPosition().x);
-        whip->setPositionY(getHandPosition().y);
+        whip->setPositionX(handX);
+        whip->setPositionY(handY);
 
         int *whipTime = (int*) whip->getUserData();
         if (--(*whipTime) == 0) {
@@ -44,7 +46,7 @@ void Player::update(int aiInfo) {
     }
 
     if (objectHeld != nullptr) {
-        objectHeld->setPosition(getHandPosition());
+        objectHeld->setPosition(Vec2(handX - objectHeld->getContentSize().width / 2, handY - objectHeld->getContentSize().height / 2));
     }
 }
 
