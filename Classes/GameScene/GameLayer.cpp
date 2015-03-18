@@ -91,36 +91,37 @@ bool GameLayer::init() {
 void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     auto pVelocity = player->velocity;
     switch (keyCode) {
-        case EventKeyboard::KeyCode::KEY_UP_ARROW:
-            // can only jump when standing still on ground
-            if (pVelocity->y == 0) {
-                pVelocity->y = JUMP_SPEED;
-            }
-            break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             player->dir = player->dir < 0 ? 2 : 1;
             break;
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
             player->dir = player->dir > 0 ? -2 : -1;
             break;
-        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-            cheat = true;
+        case EventKeyboard::KeyCode::KEY_Z:
+            // can only jump when standing still on ground
+            if (pVelocity->y == 0) {
+                pVelocity->y = JUMP_SPEED;
+            }
+            break;
+        case EventKeyboard::KeyCode::KEY_X:
+            if (whip == nullptr) {
+                whip = Sprite::create("whip.png");
+                int *whipTime = new int(30);
+                whip->setUserData((void*) whipTime);
+                whip->setAnchorPoint(Vec2(1, 0.5));
+                addChild(whip);
+            }
             break;
     }
 }
 
 void GameLayer::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
     switch (keyCode) {
-        case EventKeyboard::KeyCode::KEY_UP_ARROW:
-            break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             player->dir = player->dir == 1 ? 0 : (player->dir == 2 ? -1 : (player->dir == -2 ? -1 : player->dir));
             break;
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
             player->dir = player->dir == -1 ? 0 : (player->dir == -2 ? 1 : (player->dir == 2 ? 1 : player->dir));
-            break;
-        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-            cheat = false;
             break;
     }
 }
@@ -129,13 +130,30 @@ void GameLayer::update(float dt) {
     int oldHealth = player->health;
 
     auto pVelocity = player->velocity;
-    if (player->dir > 0 && pVelocity->x <  RUN_SPEED) pVelocity->x += RUN_ACCELERATION;
-    if (player->dir < 0 && pVelocity->x > -RUN_SPEED) pVelocity->x -= RUN_ACCELERATION;
+    if (player->dir > 0 && pVelocity->x < RUN_SPEED) {
+        pVelocity->x += RUN_ACCELERATION;
+        player->setFlippedX(true);
+    }
+    if (player->dir < 0 && pVelocity->x > -RUN_SPEED) {
+        pVelocity->x -= RUN_ACCELERATION;
+        player->setFlippedX(false);
+    }
     if (player->dir == 0) pVelocity->x *= RUN_FRICTION;
 
-    if (cheat) pVelocity->y = JUMP_SPEED;
-
     updateCreature(player);
+
+    if (whip != nullptr) {
+        whip->setFlippedX(player->isFlippedX());
+        whip->setPositionX(player->getPositionX() + (player->isFlippedX() ? player->getContentSize().width * 2 : 0));
+        whip->setPositionY(player->getPositionY() + player->getContentSize().height / 2);
+
+        int *whipTime = (int*) whip->getUserData();
+        if (--(*whipTime) == 0) {
+            delete whipTime;
+            whip->removeFromParent();
+            whip = nullptr;
+        }
+    }
 
     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
         auto s = *it;
@@ -145,6 +163,16 @@ void GameLayer::update(float dt) {
         char collision = collide(player, s);
         if (collision) {
             if (s->collidedWithPlayer(collision, player)) {
+                enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
+                --it;
+            }
+        }
+
+        // TODO move this into each enemy's code
+        if (whip != nullptr && whip->getBoundingBox().intersectsRect(s->getBoundingBox())) {
+            s->damage(1);
+            if (s->health <= 0) {
+                s->removeFromParent();
                 enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
                 --it;
             }
