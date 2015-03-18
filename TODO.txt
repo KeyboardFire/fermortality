@@ -1,0 +1,17 @@
+THE BIG FERMORTALITY TODO LIST
+==============================
+
+CONTENT / FEATURES
+------------------
+
+- Player spritesheet
+  - Walking animation
+  - Jumping animation
+  - Look up / duck (up arrow / down arrow respectively)
+- Player knockback (goomba stomping, getting hit)
+
+ORGANIZATION / INTERNAL
+-----------------------
+
+- Refactor GameLayer.whip -> Player.whip
+- `egrep -Ri 'todo|fixme' Classes`

@@ -3,5 +3,6 @@
 
 #include "Player.h"
 #include "Slime.h"
+#include "Rock.h"
 
 #endif // __ENEMIES_H__

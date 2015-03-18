@@ -10,11 +10,10 @@ void Slime::update(int aiInfo) {
     }
 }
 
-bool Slime::collidedWithPlayer(char dir, Creature *player) {
+void Slime::collidedWithPlayer(char dir, Creature *player) {
     if (player->velocity->y < 0 && player->getPositionY() > getPositionY()) {
-        removeFromParent();
-        return true;
+        damage(1);
+    } else {
+        player->damage(1);
     }
-    player->damage(1);
-    return false;
 }

@@ -11,7 +11,7 @@ class Creature: public cocos2d::Sprite {
 public:
     virtual std::string filename() { return "must be overridden"; };
     virtual void update(int aiInfo) { };
-    virtual bool collidedWithPlayer(char dir, Creature *player) {};
+    virtual void collidedWithPlayer(char dir, Creature *player) {};
     virtual void damage(int amount) { health -= amount; };
     static Creature* create(std::string type);
 

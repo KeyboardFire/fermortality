@@ -47,33 +47,15 @@ bool GameLayer::init() {
     // add slimes
     for (int i = 0; i < 25; ++i) {
         auto slime = Creature::create("slime");
-        bool retry;
-        do {
-            slime->setPosition(Vec2(
-                RandomHelper::random_int((int) map->getTileSize().width + 1, (int) (map->getContentSize().width - map->getTileSize().width)),
-                RandomHelper::random_int((int) map->getTileSize().height + 1, (int) (map->getContentSize().height - map->getTileSize().height))
-            ));
-
-            retry = false;
-
-            // no floating slimes
-            Vec2 stp = tilePosition(slime);
-            if (layer->getTileAt(Vec2((int)stp.x, (int)stp.y + 1)) == nullptr) {
-                retry = true;
-            }
-
-            // no slimes stuck in tiles
-            if (!retry) {
-                for (auto t : tiles) {
-                    if (t->getBoundingBox().intersectsRect(slime->getBoundingBox())) {
-                        retry = true;
-                    }
-                }
-            }
-        } while (retry);
-        slime->setAnchorPoint(Vec2(0, 0));
-        addChild(slime, 0);
+        placeSprite(slime);
         enemies.push_back(slime);
+    }
+
+    // add rocks
+    for (int i = 0; i < 10; ++i) {
+        auto rock = Creature::create("rock");
+        placeSprite(rock);
+        enemies.push_back(rock);
     }
 
     // add keyboard listener
@@ -86,6 +68,37 @@ bool GameLayer::init() {
     scheduleUpdate();
 
     return true;
+}
+
+void GameLayer::placeSprite(Sprite *s) {
+    s->setAnchorPoint(Vec2(0, 0));
+
+    bool retry;
+    do {
+        s->setPosition(Vec2(
+            RandomHelper::random_int((int) map->getTileSize().width + 1, (int) (map->getContentSize().width - map->getTileSize().width)),
+            RandomHelper::random_int((int) map->getTileSize().height + 1, (int) (map->getContentSize().height - map->getTileSize().height))
+        ));
+
+        retry = false;
+
+        // no floating objects
+        Vec2 stp = tilePosition(s);
+        if (layer->getTileAt(Vec2((int)stp.x, (int)stp.y + 1)) == nullptr) {
+            retry = true;
+        }
+
+        // no objects stuck in tiles
+        if (!retry) {
+            for (auto t : tiles) {
+                if (t->getBoundingBox().intersectsRect(s->getBoundingBox())) {
+                    retry = true;
+                }
+            }
+        }
+    } while (retry);
+
+    addChild(s);
 }
 
 void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
@@ -162,20 +175,18 @@ void GameLayer::update(float dt) {
 
         char collision = collide(player, s);
         if (collision) {
-            if (s->collidedWithPlayer(collision, player)) {
-                enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
-                --it;
-            }
+            s->collidedWithPlayer(collision, player);
         }
 
         // TODO move this into each enemy's code
         if (whip != nullptr && whip->getBoundingBox().intersectsRect(s->getBoundingBox())) {
             s->damage(1);
-            if (s->health <= 0) {
-                s->removeFromParent();
-                enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
-                --it;
-            }
+        }
+
+        if (s->health <= 0) {
+            s->removeFromParent();
+            enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
+            --it;
         }
     }
 

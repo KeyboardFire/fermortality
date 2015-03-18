@@ -122,6 +122,7 @@ set(GAME_SRC
   Classes/GameScene/Creature.cpp
   Classes/GameScene/Enemies/Player.cpp
   Classes/GameScene/Enemies/Slime.cpp
+  Classes/GameScene/Enemies/Rock.cpp
   Classes/MainMenuScene/MainMenuScene.cpp
   Classes/MainMenuScene/MainMenuLayer.cpp
   ${PLATFORM_SPECIFIC_SRC}
@@ -137,6 +138,7 @@ set(GAME_HEADERS
   Classes/GameScene/Enemies/Enemies.h
   Classes/GameScene/Enemies/Player.h
   Classes/GameScene/Enemies/Slime.h
+  Classes/GameScene/Enemies/Rock.h
   Classes/MainMenuScene/MainMenuScene.h
   Classes/MainMenuScene/MainMenuLayer.h
   ${PLATFORM_SPECIFIC_HEADERS}

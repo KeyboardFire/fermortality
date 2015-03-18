@@ -29,6 +29,8 @@ public:
     std::vector<Creature*> enemies;
     std::vector<Sprite*> tiles;
 
+    void placeSprite(Sprite *s);
+
     void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
     void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
 
