@@ -5,8 +5,7 @@ CONTENT / FEATURES
 ------------------
 
 - Player knockback (goomba stomping, getting hit)
-- Throwing objects (action while holding an object, can be modified by up/down
-  arrow keys)
+- Modify object throwing when looking up / ducking
 
 ORGANIZATION / INTERNAL
 -----------------------
