@@ -21,6 +21,8 @@ public:
     int invulnTime;
     Sprite *whip;
     Creature *objectHeld;
+
+    static const int RUN_SPEED = 5, RUN_ACCELERATION = 1, JUMP_SPEED = 18;
 };
 
 #endif // __PLAYER_H__

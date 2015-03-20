@@ -24,7 +24,7 @@ public:
     int screenWidth, screenHeight;
 
     Player* player;
-    const int RUN_SPEED = 5, RUN_ACCELERATION = 1, GRAVITY = 1, JUMP_SPEED = 18;
+    const int GRAVITY = 1, MAX_FALL_SPEED = -20;
     const float FRICTION = 0.95, PLAYER_FRICTION = 0.9;
     std::vector<Creature*> enemies, items;
     std::vector<Sprite*> tiles;

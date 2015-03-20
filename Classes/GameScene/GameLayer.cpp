@@ -132,7 +132,7 @@ void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
         case EventKeyboard::KeyCode::KEY_Z:
             // can only jump when standing still on ground
             if (pVelocity->y == 0) {
-                pVelocity->y = JUMP_SPEED;
+                pVelocity->y = Player::JUMP_SPEED;
             }
             break;
         case EventKeyboard::KeyCode::KEY_X:
@@ -194,12 +194,12 @@ void GameLayer::update(float dt) {
     int oldHealth = player->health;
 
     auto pVelocity = player->velocity;
-    if (player->dir > 0 && pVelocity->x < RUN_SPEED * (player->isRunning ? 2 : 1)) {
-        pVelocity->x += RUN_ACCELERATION * (player->isRunning ? 2 : 1);
+    if (player->dir > 0 && pVelocity->x < Player::RUN_SPEED * (player->isRunning ? 2 : 1)) {
+        pVelocity->x += Player::RUN_ACCELERATION * (player->isRunning ? 2 : 1);
         player->setFlippedX(true);
     }
-    if (player->dir < 0 && pVelocity->x > -RUN_SPEED * (player->isRunning ? 2 : 1)) {
-        pVelocity->x -= RUN_ACCELERATION * (player->isRunning ? 2 : 1);
+    if (player->dir < 0 && pVelocity->x > -Player::RUN_SPEED * (player->isRunning ? 2 : 1)) {
+        pVelocity->x -= Player::RUN_ACCELERATION * (player->isRunning ? 2 : 1);
         player->setFlippedX(false);
     }
     if (player->dir == 0) pVelocity->x *= PLAYER_FRICTION;
@@ -252,7 +252,7 @@ void GameLayer::updateCreature(Creature *s) {
     auto v = s->velocity;
 
     v->y -= GRAVITY;
-    if (v->y < -20) v->y = -20; // TODO figure this hack out
+    if (v->y < MAX_FALL_SPEED) v->y = MAX_FALL_SPEED;
 
     // don't apply to player for more accurate run speed
     if (s != player) v->x *= FRICTION;
