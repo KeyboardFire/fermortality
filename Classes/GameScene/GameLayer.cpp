@@ -55,7 +55,7 @@ bool GameLayer::init() {
     for (int i = 0; i < 10; ++i) {
         auto rock = Creature::create("rock");
         placeSprite(rock);
-        enemies.push_back(rock);
+        items.push_back(rock);
     }
 
     // add keyboard listener
@@ -146,7 +146,7 @@ void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
                         }
                         break;
                     case -1:
-                        for (auto s : enemies) {
+                        for (auto s : items) {
                             if (player->getBoundingBox().intersectsRect(s->getBoundingBox())) {
                                 player->objectHeld = s;
                                 break;
@@ -215,6 +215,12 @@ void GameLayer::update(float dt) {
             enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());
             --it;
         }
+    }
+
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        auto item = *it;
+
+        updateCreature(item);
     }
 
     updateCreature(player);
