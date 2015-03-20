@@ -6,7 +6,6 @@ CONTENT / FEATURES
 
 - Player knockback (goomba stomping, getting hit)
 - Fix several issues with picking things up:
-  - Modify object throwing when looking up / ducking
   - Make thrown rocks etc. damage enemies
 
 ORGANIZATION / INTERNAL

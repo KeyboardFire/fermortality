@@ -129,9 +129,9 @@ void GameLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
             break;
         case EventKeyboard::KeyCode::KEY_X:
             if (player->objectHeld != nullptr) {
-                // throw / drop (TODO) object
-                player->objectHeld->velocity->x = 25 * (player->isFlippedX() ? 1 : -1);
-                player->objectHeld->velocity->y = 5;
+                // throw / drop object
+                player->objectHeld->velocity->x = (player->lookDir == -1 ? 5 : 25) * (player->isFlippedX() ? 1 : -1);
+                player->objectHeld->velocity->y = player->lookDir == 1 ? 25 : 5;
                 player->objectHeld = nullptr;
             } else {
                 switch (player->lookDir) {
