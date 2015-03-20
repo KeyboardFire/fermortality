@@ -19,5 +19,4 @@ ASSETS (ART / MUSIC)
 
 - Make the graphics better...
 - Add background music
-- Add background image
 - Player walking/jumping animations

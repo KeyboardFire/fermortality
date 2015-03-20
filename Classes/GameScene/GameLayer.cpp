@@ -38,6 +38,14 @@ bool GameLayer::init() {
         }
     }
 
+    // background image
+    auto bg = Sprite::create("bg.png");
+    bg->setContentSize(layer->getContentSize());
+    bg->getTexture()->setTexParameters({GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT});
+    bg->setTextureRect(Rect(0, 0, bg->getContentSize().width, bg->getContentSize().height));
+    bg->setAnchorPoint(Vec2(0, 0));
+    addChild(bg, -1);
+
     // add player sprite
     player = Player::create();
     player->setPosition(Vec2(map->getTileSize().width, map->getTileSize().height));
