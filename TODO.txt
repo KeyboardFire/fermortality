@@ -5,7 +5,10 @@ CONTENT / FEATURES
 ------------------
 
 - Player knockback (goomba stomping, getting hit)
-- Modify object throwing when looking up / ducking
+- Fix several issues with picking things up:
+  - Modify object throwing when looking up / ducking
+  - Make thrown rocks etc. damage enemies
+  - Do not allow picking up enemies
 
 ORGANIZATION / INTERNAL
 -----------------------
