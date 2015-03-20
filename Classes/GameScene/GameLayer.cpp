@@ -210,6 +210,15 @@ void GameLayer::update(float dt) {
             s->collidedWithWhip(player->whip);
         }
 
+        for (auto it2 = items.begin(); it2 != items.end(); ++it2) {
+            auto item = *it2;
+
+            if ((fabs(item->velocity->x) + fabs(item->velocity->y)) > 0.1 && item->getBoundingBox().intersectsRect(s->getBoundingBox())) {
+                // TODO make this customizable per item
+                s->damage(1);
+            }
+        }
+
         if (s->health <= 0) {
             s->removeFromParent();
             enemies.erase(std::remove(enemies.begin(), enemies.end(), s), enemies.end());

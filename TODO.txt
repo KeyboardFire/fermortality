@@ -5,8 +5,6 @@ CONTENT / FEATURES
 ------------------
 
 - Player knockback (goomba stomping, getting hit)
-- Fix several issues with picking things up:
-  - Make thrown rocks etc. damage enemies
 
 ORGANIZATION / INTERNAL
 -----------------------
@@ -14,8 +12,6 @@ ORGANIZATION / INTERNAL
 - Change the name of Creature.* and Enemies/* to more accurately reflect what
   they are (a rock is technically a "Creature" and an "Enemy" and the player is
   classified as an "Enemy")
-- "Is alive" flag for Creatures/whatever they're going to be called, used for
-  determining whether to compute AI info and for whether they can be picked up
 - `egrep -Ri 'todo|fixme' Classes`
 
 ASSETS (ART / MUSIC)

@@ -47,6 +47,8 @@ void Player::update(int aiInfo) {
 
     if (objectHeld != nullptr) {
         objectHeld->setPosition(Vec2(handX - objectHeld->getContentSize().width / 2, handY - objectHeld->getContentSize().height / 2));
+        objectHeld->velocity->x = 0;
+        objectHeld->velocity->y = 0;
     }
 }
 
