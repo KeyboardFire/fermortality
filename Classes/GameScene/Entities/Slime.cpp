@@ -10,7 +10,7 @@ void Slime::update(int aiInfo) {
     }
 }
 
-void Slime::collidedWithPlayer(char dir, Creature *player) {
+void Slime::collidedWithPlayer(char dir, Entity *player) {
     if (player->velocity->y < 0 && player->getPositionY() > getPositionY()) {
         damage(1);
     } else {

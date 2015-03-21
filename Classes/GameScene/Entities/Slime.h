@@ -3,13 +3,13 @@
 
 #include "cocos2d.h"
 
-#include "../Creature.h"
+#include "../Entity.h"
 
 USING_NS_CC;
 
-class Slime: public Creature {
+class Slime: public Entity {
     virtual std::string filename() { return "slime.png"; };
-    virtual void collidedWithPlayer(char dir, Creature *player);
+    virtual void collidedWithPlayer(char dir, Entity *player);
     virtual void collidedWithWhip(Sprite *whip);
     virtual void update(int aiInfo);
 };

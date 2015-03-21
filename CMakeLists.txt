@@ -123,10 +123,10 @@ set(GAME_SRC
   Classes/GameScene/GameScene.cpp
   Classes/GameScene/GameLayer.cpp
   Classes/GameScene/HUDLayer.cpp
-  Classes/GameScene/Creature.cpp
-  Classes/GameScene/Enemies/Player.cpp
-  Classes/GameScene/Enemies/Slime.cpp
-  Classes/GameScene/Enemies/Rock.cpp
+  Classes/GameScene/Entity.cpp
+  Classes/GameScene/Entities/Player.cpp
+  Classes/GameScene/Entities/Slime.cpp
+  Classes/GameScene/Entities/Rock.cpp
   Classes/MainMenuScene/MainMenuScene.cpp
   Classes/MainMenuScene/MainMenuLayer.cpp
   ${PLATFORM_SPECIFIC_SRC}
@@ -138,11 +138,11 @@ set(GAME_HEADERS
   Classes/GameScene/GameScene.h
   Classes/GameScene/GameLayer.h
   Classes/GameScene/HUDLayer.h
-  Classes/GameScene/Creature.h
-  Classes/GameScene/Enemies/Enemies.h
-  Classes/GameScene/Enemies/Player.h
-  Classes/GameScene/Enemies/Slime.h
-  Classes/GameScene/Enemies/Rock.h
+  Classes/GameScene/Entity.h
+  Classes/GameScene/Entities/Entities.h
+  Classes/GameScene/Entities/Player.h
+  Classes/GameScene/Entities/Slime.h
+  Classes/GameScene/Entities/Rock.h
   Classes/MainMenuScene/MainMenuScene.h
   Classes/MainMenuScene/MainMenuLayer.h
   ${PLATFORM_SPECIFIC_HEADERS}

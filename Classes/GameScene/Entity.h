@@ -7,19 +7,19 @@
 
 USING_NS_CC;
 
-class Creature: public cocos2d::Sprite {
+class Entity: public cocos2d::Sprite {
 public:
     virtual std::string filename() { return "must be overridden"; };
     virtual Vec3 frameSize() { return Vec3(0, 0, 0); };
     SpriteFrame* getFrame(int i);
     virtual void update(int aiInfo) {};
-    virtual void collidedWithPlayer(char dir, Creature *player) {};
+    virtual void collidedWithPlayer(char dir, Entity *player) {};
     virtual void collidedWithWhip(Sprite *whip) {};
     virtual void damage(int amount) { health -= amount; };
-    static Creature* create(std::string type);
+    static Entity* create(std::string type);
 
     // this has to be implemented in the header because C++ is idiotic
-    template <typename T> static T* setupCreature(T *c) {
+    template <typename T> static T* setupEntity(T *c) {
         bool hasFrames = c->frameSize().x > 0;
 
         if (hasFrames) {

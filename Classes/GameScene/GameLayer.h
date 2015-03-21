@@ -4,8 +4,8 @@
 class GameScene; // forward declaration
 
 #include "cocos2d.h"
-#include "Creature.h"
-#include "Enemies/Enemies.h"
+#include "Entity.h"
+#include "Entities/Entities.h"
 #include "GameScene.h"
 
 #include <vector>
@@ -26,7 +26,7 @@ public:
     Player* player;
     const int GRAVITY = 1, MAX_FALL_SPEED = -20;
     const float FRICTION = 0.95, PLAYER_FRICTION = 0.9;
-    std::vector<Creature*> enemies, items;
+    std::vector<Entity*> enemies, items;
     std::vector<Sprite*> tiles;
 
     void placeSprite(Sprite *s);
@@ -35,7 +35,7 @@ public:
     void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
 
     virtual void update(float dt);
-    void updateCreature(Creature *s);
+    void updateEntity(Entity *s);
     Vec2 tilePosition(Sprite *s);
     char collide(Sprite *s1, Sprite *s2, bool veryclose = false);
 

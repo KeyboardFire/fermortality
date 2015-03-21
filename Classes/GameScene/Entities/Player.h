@@ -3,11 +3,11 @@
 
 #include "cocos2d.h"
 
-#include "../Creature.h"
+#include "../Entity.h"
 
 USING_NS_CC;
 
-class Player: public Creature {
+class Player: public Entity {
 public:
     Player();
     virtual std::string filename() { return "player.png"; };
@@ -20,7 +20,7 @@ public:
     bool isRunning;
     int invulnTime;
     Sprite *whip;
-    Creature *objectHeld;
+    Entity *objectHeld;
 
     static const int RUN_SPEED = 5, RUN_ACCELERATION = 1, JUMP_SPEED = 18;
 };

@@ -8,7 +8,7 @@ Player::Player(): dir(0), lookDir(0), isRunning(false), invulnTime(0) {
 
 Player* Player::create() {
     Player *p = new Player;
-    Creature::setupCreature<Player>(p);
+    Entity::setupEntity<Player>(p);
     p->health = 5;
     p->whip = nullptr;
     p->objectHeld = nullptr;

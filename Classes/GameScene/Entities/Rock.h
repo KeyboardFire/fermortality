@@ -3,11 +3,11 @@
 
 #include "cocos2d.h"
 
-#include "../Creature.h"
+#include "../Entity.h"
 
 USING_NS_CC;
 
-class Rock: public Creature {
+class Rock: public Entity {
     virtual std::string filename() { return "rock.png"; };
 };
 

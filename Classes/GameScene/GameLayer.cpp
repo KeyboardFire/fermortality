@@ -54,14 +54,14 @@ bool GameLayer::init() {
 
     // add slimes
     for (int i = 0; i < 25; ++i) {
-        auto slime = Creature::create("slime");
+        auto slime = Entity::create("slime");
         placeSprite(slime);
         enemies.push_back(slime);
     }
 
     // add rocks
     for (int i = 0; i < 10; ++i) {
-        auto rock = Creature::create("rock");
+        auto rock = Entity::create("rock");
         placeSprite(rock);
         items.push_back(rock);
     }
@@ -207,7 +207,7 @@ void GameLayer::update(float dt) {
     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
         auto s = *it;
 
-        updateCreature(s);
+        updateEntity(s);
 
         char collision = collide(player, s);
         if (collision) {
@@ -237,10 +237,10 @@ void GameLayer::update(float dt) {
     for (auto it = items.begin(); it != items.end(); ++it) {
         auto item = *it;
 
-        updateCreature(item);
+        updateEntity(item);
     }
 
-    updateCreature(player);
+    updateEntity(player);
 
     // ugly hack
     if (player->health != oldHealth) scene->updateHearts(player->health);
@@ -248,7 +248,7 @@ void GameLayer::update(float dt) {
     setPosition(Vec2(screenWidth/2 - player->getPositionX(), screenHeight/2 - player->getPositionY()));
 }
 
-void GameLayer::updateCreature(Creature *s) {
+void GameLayer::updateEntity(Entity *s) {
     auto v = s->velocity;
 
     v->y -= GRAVITY;
@@ -323,8 +323,8 @@ void GameLayer::updateCreature(Creature *s) {
     if ((int)stp.y == 0) ++stp.y;
     if ((int)stp.y == layer->getLayerSize().height - 1) --stp.y;
 
-    if (layer->getTileAt(Vec2((int)stp.x - 1, (int)stp.y + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffLeft;
-    if (layer->getTileAt(Vec2((int)stp.x + 1, (int)stp.y + 1)) == nullptr) aiInfo |= Creature::AIInfo::cliffRight;
+    if (layer->getTileAt(Vec2((int)stp.x - 1, (int)stp.y + 1)) == nullptr) aiInfo |= Entity::AIInfo::cliffLeft;
+    if (layer->getTileAt(Vec2((int)stp.x + 1, (int)stp.y + 1)) == nullptr) aiInfo |= Entity::AIInfo::cliffRight;
 
     s->update(aiInfo);
 }

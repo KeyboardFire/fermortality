@@ -1,17 +1,17 @@
-#include "Creature.h"
-#include "Enemies/Enemies.h"
+#include "Entity.h"
+#include "Entities/Entities.h"
 
 USING_NS_CC;
 
-Creature* Creature::create(std::string type) {
-    Creature *c;
+Entity* Entity::create(std::string type) {
+    Entity *c;
     if (type == "player") c = new Player();
     else if (type == "slime") c = new Slime();
     else if (type == "rock") c = new Rock();
 
-    return Creature::setupCreature<Creature>(c);
+    return Entity::setupEntity<Entity>(c);
 }
 
-SpriteFrame* Creature::getFrame(int i) {
+SpriteFrame* Entity::getFrame(int i) {
     return SpriteFrameCache::getInstance()->getSpriteFrameByName(filename() + std::to_string(i));
 }
