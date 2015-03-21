@@ -9,7 +9,7 @@ CONTENT / FEATURES
 ORGANIZATION / INTERNAL
 -----------------------
 
-- `egrep -Ri 'todo|fixme' Classes`
+- `grep -Ri todo Classes`
 
 ASSETS (ART / MUSIC)
 --------------------

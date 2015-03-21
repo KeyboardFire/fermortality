@@ -15,7 +15,7 @@ bool HUDLayer::init() {
         hearts.push_back(heart);
     }
 
-    // this is a hack FIXME use sprite sheets
+    // this is a hack TODO use sprite sheets
     fullHeart = CCTextureCache::getInstance()->addImage("heartFull.png");
     emptyHeart = CCTextureCache::getInstance()->addImage("heartEmpty.png");
 

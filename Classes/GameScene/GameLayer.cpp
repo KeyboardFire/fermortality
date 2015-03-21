@@ -11,7 +11,6 @@ bool GameLayer::init() {
     // super init first
     if (!Layer::init()) return false;
 
-    // FIXME this is a hack
     screenWidth = Director::getInstance()->getOpenGLView()->getFrameSize().width;
     screenHeight = Director::getInstance()->getOpenGLView()->getFrameSize().height;
 
